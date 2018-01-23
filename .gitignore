@@ -1,1 +1,6 @@
-ubuntu-xenial-16.04-cloudimg-console.log
+ubuntu*
+.vagrant/
+/.vagrant/
+**/.vagrant/
+.git
+
