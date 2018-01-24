@@ -175,21 +175,23 @@ fi
 
 if [[ "$debug" == "0" || "$skip3" == 0 ]]; then
     #install virtual box
-#    printf "\n\nInstalling virtual box\n\n"
-#    cd /etc/yum.repos.d/
-#    sudo wget http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
-#    cd
-#    cd ChRIS-E2E
-#    sudo dnf update -y
-#    sudo dnf install binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms -y
-#    sudo dnf install VirtualBox-5.2 -y
-#    sudo /usr/lib/virtualbox/vboxdrv.sh setup
-#    sudo usermod -a -G vboxusers $(whoami)
-#    VirtualBox
+    printf "\n\nInstalling virtual box\n\n"
+    sudo dnf install kernel-devel kernel-devel-4.13.9-300.fc27.x86_64
+    cd /etc/yum.repos.d/
+    sudo wget http://download.virtualbox.org/virtualbox/rpm/fedora/virtualbox.repo
+    cd
+    cd ChRIS-E2E
+    sudo dnf update -y
+    sudo dnf install binutils gcc make patch libgomp glibc-headers glibc-devel kernel-headers kernel-devel dkms -y
+    sudo dnf install VirtualBox-5.2 -y
+    sudo /usr/lib/virtualbox/vboxdrv.sh setup
+    sudo usermod -a -G vboxusers $(whoami)
 
     #install vagrant
     printf "\n\nInstalling Vagrant\n\n"
-    sudo dnf install vagrant -y
+    wget https://releases.hashicorp.com/vagrant/2.0.1/vagrant_2.0.1_x86_64.rpm?_ga=2.26716414.2106638317.1516825362-266459351.1516825362
+    mv 'vagrant_2.0.1_x86_64.rpm?_ga=2.26716414.2106638317.1516825362-266459351.1516825362' vagrant_2.0.1_x86_64.rpm
+    sudo rpm -i vagrant_2.0.1_x86_64.rpm
 
     #install vagrant guest package manager
     vagrant plugin install vagrant-vbguest
@@ -201,6 +203,8 @@ if [[ "$debug" == "0" || "$skip3" == 0 ]]; then
     #get default gateway for your localhost
     HOST_IP=$(netstat -rn | grep "^0.0.0.0 " | cut -d " " -f10)
 
+    #get pfurl
+    sudo pip3 install pfurl
     #modify openshift local to accomodae default gateway  ---> Rudolph may make changes to this
     pfurl --verb POST --raw --http 192.168.50.4:5005/api/v1/cmd --httpResponseBodyParse --jsonwrapper 'payload' --msg \
 "'openshiftlocal': {
