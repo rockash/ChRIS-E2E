@@ -55,7 +55,7 @@ if [[ "$DEPS" -eq "1" && "$VAGRANT" -eq "0" ]];then
 
     #pfurl
     sudo pip3 install pfurl
-    
+
     #configure environment for openshift and chris
     su -c "echo INSECURE_REGISTRY=\'--insecure-registry 172.30.0.0/16\' >> /etc/sysconfig/docker"
     sudo systemctl daemon-reload
@@ -88,8 +88,8 @@ if [ "$VAGRANT" -eq "0" ];then
 
     #set up chris env
     echo "Setting up local Chris Cluster"
-    pushd ChRIS_ultron_backEnd
-    sudo docker-compose up -d up
+    pushd ChRIS_ultron_backEnd/
+    sudo docker-compose up -d
     sudo docker-compose exec chris_dev_db sh -c 'while ! mysqladmin -uroot -prootp status 2> /dev/null; do sleep 5; done;'
     sudo docker-compose exec chris_dev_db mysql -uroot -prootp -e 'GRANT ALL PRIVILEGES ON *.* TO "chris"@"%"'
     sudo docker-compose exec chris_dev /bin/bash -c 'python manage.py migrate'
