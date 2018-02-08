@@ -1,5 +1,20 @@
-# ChRIS-E2E
+# ChRIS End To End Testing Environment
+This script autmatically builds and deploys the ChRIS backend in docker-compose and pman and pfioh in Openshift. Currently,
+this only works locally. I am working on an implementation of this that builds the end to end system in a vagrant vm as well.
 
-This is only designed to work on Fedora 27 at the moment
-Run the script with the command: sudo bash create-env.sh
-If you want to debug, or only run a portion of the script, run: sudo bash create-env.sh -d
+## Options
+Flag | Description
+----------------- | -----------------
+--deps | This will trigger the script to install and configure the necessary dependancies on your system
+--interactive | The ChRIS_backend container will be run in interactive mode at the end of this script. **Note: if you include this flag, when the script ends the terminal buffer you are using will be attached to the shell of the ChRIS_backend container and you will no longer be able to use it**
+--vagrant | The end to end system will be deployed in a vagrant vm instead of on your local system. **WARNING: this has not yet been implemented succesfully**
+--test | This will run tests agains the components of the system to make sure they are working correctly
+--help | Prints this message and exits the script with code 0
+
+## Usage
+You must run this bash script with sudo permissions. The easiest way to do this is as follows:
+
+```shell
+sudo bash mkenv.sh [options]
+```
+    
