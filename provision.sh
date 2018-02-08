@@ -1,65 +1,24 @@
-#docker CE
-sudo apt-get update
-sudo apt-get install \
-    linux-image-extra-$(uname -r) \
-    Linux-image-extra-virtual
-sudo apt-get update
-sudo apt-get install \
-    apt-transport-https \
-    ca-certificates \
-    curl \
-    software-properties-common
+#install and configure docker
+sudo dnf install docker -y
 
-#docker compose
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
-apt-key fingerprint 0EBFCD88
-add-apt-repository \
-   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) \
-   stable"
-sudo apt-get update
-sudo apt-get install docker-ce
+#install docker compose
+sudo dnf install docker-compose -y
 
-#get docker engine
-sudo apt-get install --no-install-recommends \
-    apt-transport-https \
-    curl \
-    software-properties-common
-sudo apt-get install -y --no-install-recommends \
-    linux-image-extra-$(uname -r) \
-    linux-image-extra-virtual
-curl -fsSL 'https://sks-keyservers.net/pks/lookup?op=get&search=0xee6d536cf7dc86e2d7d56f59a178ac6c6238f52e' | apt-key add -
-add-apt-repository \
-   "deb https://packages.docker.com/1.13/apt/repo/ \
-   ubuntu-$(lsb_release -cs) \
-   main"
-sudo apt-get update
-sudo apt-get -y install docker-engine
+#configure environment for openshift and chris
+su -c "echo INSECURE_REGISTRY=\'--insecure-registry 172.30.0.0/16\' >> /etc/sysconfig/docker"
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+firewall-cmd --permanent --new-zone dockerc
+firewall-cmd --permanent --zone dockerc --add-source 172.17.0.0/16
+firewall-cmd --permanent --zone dockerc --add-port 8443/tcp
+firewall-cmd --permanent --zone dockerc --add-port 53/udp
+firewall-cmd --permanent --zone dockerc --add-port 8053/udp
+firewall-cmd --reload
+sudo setenforce 0
 
-#allows home user to access daemon
-sudo usermod -a -G docker $USER
-
-#get the latest docker compose
-curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-sudo chmod +x /usr/local/bin/docker-compose
-
-#enable the daemon at startup
-sudo systemctl enable docker 
-sudo systemctl start docker
-
-#clone the backend repo
-sudo apt-get install git
-git clone https://github.com/iamemilio/ChRIS_ultron_backEnd.git
-git checkout LocalE2E
-
-# chris dependancies (I dont think I need most of these)
-sudo apt-get install -y python3-dev 
-sudo apt-get install -y python3 python3-pip
-sudo apt-get install -y python-pip libmysqlclient-dev
-sudo apt-get install -y libssl-dev 
-sudo apt-get install -y libcurl4-openssl-dev
-sudo apt-get install -y apache2 apache2-dev
-sudo pip install virtualenv virtualenvwrapper
-
-sudo apt-get update
-sudo pip3 install pfurl
+#install openshift client tools
+wget https://github.com/openshift/origin/releases/download/v3.7.1/openshift-origin-client-tools-v3.7.1-ab0f056-linux-64bit.tar.gz
+tar -xvf openshift-origin-client-tools-v3.7.1-ab0f056-linux-64bit.tar.gz 
+sudo mv openshift-origin-client-tools-v3.7.1-ab0f056-linux-64bit/oc /usr/bin
+rm openshift-origin-client-tools-v3.7.1-ab0f056-linux-64bit.tar.gz
+sudo rm -rf openshift-origin-client-tools-v3.7.1-ab0f056-linux-64bit
