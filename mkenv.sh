@@ -36,7 +36,7 @@ This script takes the following flags:
                             WARNING: this has not yet been implemented
 
     --test              This will run tests agains the components of the system to make sure they are working correctly and
-                            can be reached
+                            can be reached  --!! Not working right now
 
     --help              Prints this message and exits the script with code 0
 """
@@ -52,9 +52,6 @@ if [[ "$DEPS" -eq "1" && "$VAGRANT" -eq "0" ]];then
 
     #install docker compose
     sudo dnf install docker-compose -y
-
-    #fetch pfurl
-    sudo docker pull fnndsc/pfurl
 
     #configure environment for openshift and chris
     su -c "echo INSECURE_REGISTRY=\'--insecure-registry 172.30.0.0/16\' >> /etc/sysconfig/docker"
@@ -154,6 +151,7 @@ if [ "$VAGRANT" -eq "0" ];then
     oc new-app pfioh/openshift/pfioh-openshift-template-without-swift.json
 
     if [ "$TEST" -eq "1" ]; then
+        sleep 5s
         #check pman
         echo "Testing if pman can be reached with hello"
         sudo docker run fnndsc/pfurl --verb POST --raw --http pman-myproject.127.0.0.1.nip.io/api/v1/cmd --jsonwrapper 'payload' --msg \
@@ -163,7 +161,7 @@ if [ "$VAGRANT" -eq "0" ];then
                          "echoBack":     "Hi there!"
                  }
          }' --quiet --jsonpprintindent 4 
-
+        
         #check pfioh
         echo "Testing if pfioh can be reached with hello"
         sudo docker run pfurl --verb POST --raw --http pfioh-myproject.127.0.0.1.nip.io/api/v1/cmd --httpResponseBodyParse --jsonwrapper 'payload' --msg \
@@ -194,6 +192,7 @@ if [ "$VAGRANT" -eq "0" ];then
                         "service":       "host"
                     }
         }'
+
     fi
 
     if [ "$INTERACTIVE" -eq "1" ];then
