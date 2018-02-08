@@ -119,8 +119,8 @@ if [ "$VAGRANT" -eq "0" ];then
     if [ -z pfioh ]; then
         break
     else
-        pman=($pman)
-        sudo docker stop ${pman[0]}
+        pfioh=($pfioh)
+        sudo docker stop ${pfioh[0]}
     fi
     
     echo "Setting up openshift environment"
