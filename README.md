@@ -17,4 +17,3 @@ You must run this bash script with sudo permissions. The easiest way to do this 
 ```shell
 sudo bash mkenv.sh [options]
 ```
-    
