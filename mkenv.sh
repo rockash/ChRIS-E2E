@@ -53,8 +53,8 @@ if [[ "$DEPS" -eq "1" && "$VAGRANT" -eq "0" ]];then
     #install docker compose
     sudo dnf install docker-compose -y
 
-    #pfurl
-    sudo pip3 install pfurl
+    #fetch pfurl
+    sudo docker pull fnndsc/pfurl
 
     #configure environment for openshift and chris
     su -c "echo INSECURE_REGISTRY=\'--insecure-registry 172.30.0.0/16\' >> /etc/sysconfig/docker"
@@ -156,7 +156,7 @@ if [ "$VAGRANT" -eq "0" ];then
     if [ "$TEST" -eq "1" ]; then
         #check pman
         echo "Testing if pman can be reached with hello"
-        pfurl --verb POST --raw --http pman-myproject.127.0.0.1.nip.io/api/v1/cmd --jsonwrapper 'payload' --msg \
+        sudo docker run fnndsc/pfurl --verb POST --raw --http pman-myproject.127.0.0.1.nip.io/api/v1/cmd --jsonwrapper 'payload' --msg \
          '{  "action": "hello",
                  "meta": {
                          "askAbout":     "sysinfo",
@@ -166,7 +166,7 @@ if [ "$VAGRANT" -eq "0" ];then
 
         #check pfioh
         echo "Testing if pfioh can be reached with hello"
-        pfurl --verb POST --raw --http pfioh-myproject.127.0.0.1.nip.io/api/v1/cmd --httpResponseBodyParse --jsonwrapper 'payload' --msg \
+        sudo docker run pfurl --verb POST --raw --http pfioh-myproject.127.0.0.1.nip.io/api/v1/cmd --httpResponseBodyParse --jsonwrapper 'payload' --msg \
          '{  "action": "hello",
                  "meta": {
                          "askAbout":     "sysinfo",
@@ -176,12 +176,12 @@ if [ "$VAGRANT" -eq "0" ];then
 
         #check CUBE user chris
         echo "Testing if the backend can be reached by user chris"
-        pfurl --auth chris:chris1234 --verb GET --raw --http 127.0.0.1:8000/api/v1/ \
+        sudo docker run pfurl --auth chris:chris1234 --verb GET --raw --http 127.0.0.1:8000/api/v1/ \
             --quiet --jsonpprintindent 4
 
         #check CUBE user CUBE
         echo "Testing if the backend can be reached by user cube"
-        pfurl --auth cube:cube1234 --verb GET --raw --http 127.0.0.1:8000/api/v1/ \
+        sudo docker run pfurl --auth cube:cube1234 --verb GET --raw --http 127.0.0.1:8000/api/v1/ \
             --quiet --jsonpprintindent 4
 
         #check pfcon  !!!hangs
