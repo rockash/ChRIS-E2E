@@ -8,7 +8,7 @@ Flag | Description
 --deps | This will trigger the script to install and configure the necessary dependancies on your system
 --interactive | The ChRIS_backend container will be run in interactive mode at the end of this script. **Note: if you include this flag, when the script ends the terminal buffer you are using will be attached to the shell of the ChRIS_backend container and you will no longer be able to use it**
 --vagrant | The end to end system will be deployed in a vagrant vm instead of on your local system. **WARNING: this has not yet been implemented succesfully**
---test | This will run tests agains the components of the system to make sure they are working correctly **NOT WORKING**
+--test | This will run tests agains the components of the system to make sure they are working correctly **NOT WORKINGxz**
 --help | Prints this message and exits the script with code 0
 
 ## Usage
