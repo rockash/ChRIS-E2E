@@ -1,19 +1,20 @@
 # ChRIS End To End Testing Environment
-This script autmatically builds and deploys the ChRIS backend in docker-compose and pman and pfioh in Openshift. Currently,
-this only works locally. I am working on an implementation of this that builds the end to end system in a vagrant vm as well. Note that if you include the --deps flag, this script will install software to your local filesystem, install dnf updates, foward ports in your firewall, and set your SELinux to permissive. If this is not desirable to you, you may want to manually install the dependancies.
+This script autmatically builds and deploys the ChRIS backend in docker-compose and pman and pfioh in Open Shift. This has only been tested to work on
+the latest fedora (f27 at the time of writing)
+
+## Setup and Dependancies
+-fill out in git-
 
 ## Options
 Flag | Description
 ----------------- | -----------------
---deps | This will trigger the script to install and configure the necessary dependancies on your system
---interactive | The ChRIS_backend container will be run in interactive mode at the end of this script. **Note: if you include this flag, when the script ends the terminal buffer you are using will be attached to the shell of the ChRIS_backend container and you will no longer be able to use it**
---vagrant | The end to end system will be deployed in a vagrant vm instead of on your local system. **WARNING: this has not yet been implemented succesfully**
---test | This will run tests agains the components of the system to make sure they are working correctly **Note: pfcon hangs at the moment**
+--deps | This will trigger the script to install and configure the necessary dependancies on your system **This will configure your firewall settings, change your seLinux to permissive, clone git repos, and install software on your system.** If you dont want to do this, or would rather do it yourself, follow the readme
+--interactive [arg1 arg2 ...] | The specified services be restarted in interactive mode in a new shell window. This is mainly for debugging. Accepted arguments: pman, pfcon, pfioh, chris_dev all(equivilent to: pman pfcon pfioh chris_dev)
+--test | This will run tests agains the components of the system to make sure they are working correctly 
 --help | Prints this message and exits the script with code 0
 
 ## Usage
-You must run this bash script with sudo permissions. The easiest way to do this is as follows:
 
 ```shell
-sudo bash mkenv.sh [options]
+./mkenv.sh [options]
 ```
