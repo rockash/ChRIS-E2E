@@ -34,7 +34,7 @@ Options:
                                             to do this, or would rather do it yourself, refer to
                                             the README
 
-    --interactive [arg1 arg2 ...]       The specified services be restarted in interactive mode in
+    --interactive [arg1 arg2 ...]       The specified services are restarted in interactive mode in
                                             a new shell window. This is mainly for debugging. If you
                                             want to change pfcon to interactive mode along with a
                                             different service, you must put pfcon first!
@@ -200,11 +200,14 @@ oc set env dc/pman OPENSHIFTMGR_PROJECT=myproject
 oc new-app pfioh/openshift/pfioh-openshift-template-without-swift.json
 
 #restarts jobs in interactive terminals
-if [ "$INTERACTIVE" -eq "1" ];then
-    if [ ${#args[@]} -eq 0 ];then
+if [ "$INTERACTIVE" -eq "1" ]
+then
+    if [ ${#args[@]} -eq 0 ]
+    then
         echo "You did not provide any services to run interactively. For help run the script with --help"
         exit 1
-    elif [[ ${#args[@]} -eq 1 && "${args[0]}" == "all" ]];then
+    elif [[ ${#args[@]} -eq 1 && "${args[0]}" == "all" ]]
+    then
         args=(pfcon pman pfioh)
         pushd ChRIS_ultron_backEnd
         for restart in "${args[@]}"; do
@@ -214,6 +217,7 @@ if [ "$INTERACTIVE" -eq "1" ];then
         pushd ChRIS_ultron_backEnd
         for restart in "${args[@]}"; do
             sudo docker-compose stop "$restart"_service && docker-compose rm -f "$restart"_service
-            gnome-terminal -e docker-compose run --service-ports "$restart"_service        
+            gnome-terminal -e docker-compose run --service-ports "$restart"_service 
+    fi   
 fi
 exit 0
