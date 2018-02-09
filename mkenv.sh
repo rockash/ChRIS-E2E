@@ -51,13 +51,18 @@ Options:
 """
             exit 0
             ;;
+        *)
+            echo "Invalid syntax: $1"
+            echo "Check the README or use --help to see the usage"
+            exit 1
+            ;;
     esac
     shift
 done
 
 if [ "$TEST" -eq "1" ]; then
-    #check pman
-    echo "Testing if pman can be reached with hello"
+    #check openshift pman
+    echo "Testing if openshift pman can be reached with hello"
     pfurl --verb POST --raw --http pman-myproject.127.0.0.1.nip.io/api/v1/cmd --jsonwrapper 'payload' --msg \
      '{  "action": "hello",
              "meta": {
@@ -67,7 +72,7 @@ if [ "$TEST" -eq "1" ]; then
      }' --quiet --jsonpprintindent 4 
     
     #check pfioh
-    echo "Testing if pfioh can be reached with hello"
+    echo "Testing if openshift pfioh can be reached with hello"
     pfurl --verb POST --raw --http 127.0.0.1:5055/api/v1/cmd --httpResponseBodyParse --jsonwrapper 'payload' --msg \
      '{  "action": "hello",
              "meta": {
@@ -75,6 +80,7 @@ if [ "$TEST" -eq "1" ]; then
                      "echoBack":     "Hi there!"
              }
      }' --quiet --jsonpprintindent 4 
+
     #check CUBE user chris
     echo "Testing if the backend can be reached by user chris"
     pfurl --auth chris:chris1234 --verb GET --raw --http 127.0.0.1:8000/api/v1/ \
@@ -83,8 +89,9 @@ if [ "$TEST" -eq "1" ]; then
     echo "Testing if the backend can be reached by user cube"
     pfurl --auth cube:cube1234 --verb GET --raw --http 127.0.0.1:8000/api/v1/ \
         --quiet --jsonpprintindent 4
-    #check pfcon
-    echo "Testing if local pman and pfioh can be reached with hello"
+    
+    #check pfcon --hangs
+    echo "Testing if local pman and pfioh can be reached through pfcon"
     pfurl --verb POST --raw --http 127.0.0.1:5005/api/v1/cmd --httpResponseBodyParse --jsonwrapper 'payload' --msg \
     '{  "action": "hello",
         "meta": {
@@ -93,7 +100,8 @@ if [ "$TEST" -eq "1" ]; then
                     "service":       "host"
                 }
     }'
-    echo "Testing if local pman and pfioh can be reached with hello"
+
+    echo "Testing if remote pman and pfioh can be reached with hello"
     pfurl --verb POST --raw --http 127.0.0.1:5005/api/v1/cmd --httpResponseBodyParse --jsonwrapper 'payload' --msg \
     '{  "action": "hello",
         "meta": {
@@ -211,13 +219,15 @@ then
         args=(pfcon pman pfioh)
         pushd ChRIS_ultron_backEnd
         for restart in "${args[@]}"; do
-            sudo docker-compose stop "$restart"_service && docker-compose rm -f "$restart"_service
-            gnome-terminal -e docker-compose run --service-ports "$restart"_service
+            sudo docker-compose stop "$restart"_service && sudo docker-compose rm -f "$restart"_service
+            sudo gnome-terminal -e "sudo docker-compose run --service-ports "$restart"_service"
+        done
     else
         pushd ChRIS_ultron_backEnd
         for restart in "${args[@]}"; do
-            sudo docker-compose stop "$restart"_service && docker-compose rm -f "$restart"_service
-            gnome-terminal -e docker-compose run --service-ports "$restart"_service 
+            sudo docker-compose stop "$restart"_service && sudo docker-compose rm -f "$restart"_service
+            sudo gnome-terminal -e "sudo docker-compose run --service-ports "$restart"_service"
+        done
     fi   
 fi
 exit 0
