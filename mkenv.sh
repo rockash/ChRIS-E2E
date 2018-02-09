@@ -24,20 +24,28 @@ do
             ;;
         --help)
             echo """
-This script autmatically builds and deploys the ChRIS backend in docker-compose and pman and pfioh in Open Shift. This has only been tested to work on
-the latest fedora (f27 at the time of writing)
+Usage: ./mkenv.sh [options]
+Options:
+    --deps                              This will trigger the script to install and configure the
+                                            necessary dependancies on your system
+                                            WARNING: this will configure your firewall settings, 
+                                            change your seLinux to permissive, clone git repos,
+                                            and install software on your system. If you dont want
+                                            to do this, or would rather do it yourself, refer to
+                                            the README
 
-This script takes the following flags:
-    --deps                              This will trigger the script to install and configure the necessary dependancies on your system
-                                            WARNING: this will configure your firewall settings, change your seLinux to permissive, clone
-                                            git repos, and install software on your system. If you dont want to do this, or would rather do
-                                            it yourself, follow the readme
+    --interactive [arg1 arg2 ...]       The specified services be restarted in interactive mode in
+                                            a new shell window. This is mainly for debugging. If you
+                                            want to change pfcon to interactive mode along with a
+                                            different service, you must put pfcon first!
+                                            Accepted arguments: 
+                                                pfcon [pman pfioh]   (pman pfioh optional)
+                                                pfioh pman           (one or both in any order)
+                                                all                  (equivilent to: pfcon pman pfioh)
 
-    --interactive [arg1 arg2 ...]       The specified services be restarted in interactive mode in a new shell window. This is mainly for debugging.
-                                            Accepted arguments: pman, pfcon, pfioh, chris_dev, all(equivilent to: pman pfcon pfioh chris_dev)
-
-    --test                              This will run tests agains the components of the system to make sure they are working correctly, then
-                                            it will exit with code 0
+    --test                              This will run tests agains the components of the system to 
+                                            make sure they are working correctly, then it will exit
+                                            with code 0
 
     --help                              Prints this message and exits the script with code 0
 """
@@ -197,7 +205,7 @@ if [ "$INTERACTIVE" -eq "1" ];then
         echo "You did not provide any services to run interactively. For help run the script with --help"
         exit 1
     elif [[ ${#args[@]} -eq 1 && "${args[0]}" == "all" ]];then
-        args=(pman pfioh pfcon chris_dev)
+        args=(pfcon pman pfioh)
         pushd ChRIS_ultron_backEnd
         for restart in "${args[@]}"; do
             sudo docker-compose stop "$restart"_service && docker-compose rm -f "$restart"_service
