@@ -1,6 +1,6 @@
 # ChRIS End To End Testing Environment
 This script autmatically builds and deploys the ChRIS backend in docker-compose and pman and pfioh in Openshift. Currently,
-this only works locally. I am working on an implementation of this that builds the end to end system in a vagrant vm as well.
+this only works locally. I am working on an implementation of this that builds the end to end system in a vagrant vm as well. Note that if you include the --deps flag, this script will install software to your local filesystem, install dnf updates, foward ports in your firewall, and set your SELinux to permissive. If this is not desirable to you, you may want to manually install the dependancies.
 
 ## Options
 Flag | Description
