@@ -126,8 +126,8 @@ if [ "$DEPS" -eq "1" ];then
     git clone https://github.com/FNNDSC/ChRIS_ultron_backEnd.git
     git clone https://github.com/FNNDSC/pfurl.git
 
-    #install gcc (needed for pfurl and pip)
-    sudo dnf install gcc
+    #install deps for pip
+    sudo dnf install redhat-rpm-config gcc-c++ python3-devel
 
     #install pfurl
     pushd pfurl/
