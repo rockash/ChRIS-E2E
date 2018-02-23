@@ -1,4 +1,4 @@
-~/code/pfurl/bin/pfurl --verb POST --httpResponseBodyParse --raw --http $1/api/v1/cmd --msg \
+pfurl --verb POST --httpResponseBodyParse --raw --http $1/api/v1/cmd --msg \
 "{  \"action\": \"pushPath\",
     \"meta\": {
         \"remote\": {
