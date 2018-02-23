@@ -1,0 +1,20 @@
+~/code/pfurl/bin/pfurl --verb POST --httpResponseBodyParse --raw --http $1/api/v1/cmd --msg \
+"{  \"action\": \"pushPath\",
+    \"meta\": {
+        \"remote\": {
+            \"key\":         \"$2\"
+        },
+        \"local\": {
+            \"path\":         \"/tmp/pfioh-test\"
+        },
+        \"transport\": {
+            \"mechanism\":    \"compress\",
+            \"compress\": {
+                \"encoding\": \"base64\",
+                \"archive\":  \"zip\",
+                \"unpack\":   true,
+                \"cleanup\":  true
+            }
+        }
+    }
+}" --quiet --jsonpprintindent 4
