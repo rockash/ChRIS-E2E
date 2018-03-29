@@ -27,7 +27,7 @@ do
 Usage: ./mkenv.sh [options]
 Options:
     --deps                              This will trigger the script to install and configure the
-                                            necessary dependancies on your system
+                                            necessary dependencies on your system
                                             WARNING: this will configure your firewall settings, 
                                             change your seLinux to permissive, clone git repos,
                                             and install software on your system. If you dont want
@@ -43,7 +43,7 @@ Options:
                                                 pfioh pman           (one or both in any order)
                                                 all                  (equivilent to: pfcon pman pfioh)
 
-    --test                              This will run tests agains the components of the system to 
+    --test                              This will run tests against the components of the system to 
                                             make sure they are working correctly, then it will exit
                                             with code 0
 
@@ -118,7 +118,7 @@ if [ "$TEST" -eq "1" ]; then
     exit 0
 fi
 
-# if the user wants to install dependancies on their local
+# if the user wants to install dependencies on their local
 if [ "$DEPS" -eq "1" ];then
     #these will throw errors if they are alreay in local dir, but the code will keep running
     git clone https://github.com/FNNDSC/pman.git
@@ -155,7 +155,7 @@ if [ "$DEPS" -eq "1" ];then
     #install openshift client tools
     sudo dnf install origin-clients.x86_64
 
-    #update packages  :( slow but it wont work if you dont.
+    #update packages  :( slow but it won't work if you don't.
     sudo dnf update -y
 fi
 

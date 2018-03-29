@@ -1,16 +1,16 @@
 # ChRIS End To End Testing Environment
-This script autmatically builds and deploys the ChRIS backend in docker-compose and pman and pfioh in OpenShift. This has only been tested to work on
+This script automatically builds and deploys the ChRIS backend in docker-compose and pman and pfioh in OpenShift. This has only been tested to work on
 the latest fedora (f27 at the time of writing)
 
-## Setup and Dependancies
+## Setup and Dependencies
 ### Docker
-You must have a specific version of docker on your system for OpenShift to work. Currently, using the version in the dnf library is the easiest way to garuntee that you have the right version. Docker Compose is also required for building the FNNDSC ChRIS Backend. It is convenient to install them both together like this:
+You must have a specific version of docker on your system for OpenShift to work. Currently, using the version in the dnf library is the easiest way to guarantee that you have the right version. Docker Compose is also required for building the FNNDSC ChRIS Backend. It is convenient to install them both together like this:
 ```shell
 sudo dnf install docker docker-compose -y
 ```
 
 ### OpenShift
-For OpenShift to run on your desktop environment, an insecure registry has to be added to your docker sysconfig, and changes need to be made to your firewall. If you want more information on running openshift, refer to [this page.](https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md) The following commands will properly configure your environment and install OpenShift:
+For OpenShift to run on your desktop environment, an insecure registry has to be added to your docker sysconfig, and changes need to be made to your firewall. If you want more information on running OpenShift, refer to [this page.](https://github.com/openshift/origin/blob/master/docs/cluster_up_down.md) The following commands will properly configure your environment and install OpenShift:
 ```shell
 dnet=$(sudo docker network inspect -f "{{range .IPAM.Config }}{{ .Subnet }}{{end}}" bridge)
 su -c "echo INSECURE_REGISTRY=\'--insecure-registry 172.30.0.0/16\' >> /etc/sysconfig/docker"
@@ -50,7 +50,7 @@ In order to run this script, a version of the ChRIS Ultron Backend, Pfioh, and P
 
 Options:
     --deps                              This will trigger the script to install and configure the
-                                            necessary dependancies on your system
+                                            necessary dependencies on your system
                                             WARNING: this will configure your firewall settings, 
                                             change your seLinux to permissive, clone git repos,
                                             and install software on your system. If you dont want
@@ -64,9 +64,9 @@ Options:
                                             Accepted arguments: 
                                                 pfcon [pman pfioh]   (pman pfioh optional)
                                                 pfioh pman           (one or both in any order)
-                                                all                  (equivilent to: pfcon pman pfioh)
+                                                all                  (equivalent to: pfcon pman pfioh)
 
-    --test                              This will run tests agains the components of the system to 
+    --test                              This will run tests against the components of the system to 
                                             make sure they are working correctly, then it will exit
                                             with code 0
 
