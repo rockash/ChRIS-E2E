@@ -30,14 +30,13 @@ pfurl --verb POST --raw --http $1/api/v1/cmd --httpResponseBodyParse --jsonwrapp
             },
 
             \"meta-compute\":  {
-                \"cmd\":\"\$execshell \$selfpath/\$selfexec --prefix test- --sleepLength 20 /share/incoming /share/outgoing\",
+                \"cmd\":\"simpledsapp.py --prefix test- --sleepLength 20 /share/incoming /share/outgoing\",
                 \"auid\":\"rudolphpienaar\",
                 \"jid\":\"$3\",
                 \"threaded\":true,
                 \"container\":  {
                         \"target\": {
-                            \"image\":\"fnndsc/pl-simpledsapp\",
-                            \"cmdParse\":true
+                            \"image\":\"fnndsc/pl-simpledsapp\"
                         },
                         \"manager\": {
                             \"image\":\"fnndsc/openshiftmgr\",
