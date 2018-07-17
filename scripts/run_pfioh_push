@@ -1,20 +1,27 @@
-pfurl --verb POST --httpResponseBodyParse --raw --http $1/api/v1/cmd --msg \
-"{  \"action\": \"pushPath\",
-    \"meta\": {
-        \"remote\": {
-            \"key\":         \"$2\"
-        },
-        \"local\": {
-            \"path\":         \"/tmp/pfioh-test\"
-        },
-        \"transport\": {
-            \"mechanism\":    \"compress\",
-            \"compress\": {
-                \"encoding\": \"base64\",
-                \"archive\":  \"zip\",
-                \"unpack\":   true,
-                \"cleanup\":  true
+if [ ! -d $2 ]; then
+    echo "Directory "$2" not found!"
+if [ ! -d $3 ]; then
+    echo "Directory "$3" not found!"
+else    
+    pfurl --verb POST --httpResponseBodyParse --raw --http $1/api/v1/cmd --msg \
+    "{  \"action\": \"pushPath\",
+        \"meta\": {
+            \"remote\": {
+                \"key\":         \"$2\"
+            },
+            \"local\": {
+                \"path\":         \"$3\"
+            },
+            \"transport\": {
+                \"mechanism\":    \"compress\",
+                \"compress\": {
+                    \"encoding\": \"base64\",
+                    \"archive\":  \"zip\",
+                    \"unpack\":   true,
+                    \"cleanup\":  true
+                }
             }
         }
-    }
-}" --quiet --jsonpprintindent 4
+    }" --quiet --jsonpprintindent 4
+fi
+fi
